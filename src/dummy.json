@@ -1,0 +1,684 @@
+{
+  "electronics": {
+    "name": "Electronics",
+    "parent": null,
+    "metadata": {
+      "description": "All electronic items",
+      "keywords": ["electronics", "gadgets", "devices"]
+    },
+    "description": "Find all electronic devices and gadgets here.",
+    "attributes": {
+      "brand": "Samsung, Apple, Sony, LG, Xiaomi",
+      "type": "Mobile, Laptop, Television, Accessory",
+      "feature": "Smart, 4K, Wireless, Touchscreen"
+    },
+    "children": [
+      {
+        "name": "Mobile",
+        "parent": "6713c1a4a8913b3ad25b76c5",
+        "metadata": {
+          "description": "Explore the latest mobile phones and accessories.",
+          "keywords": [
+            "mobile phones",
+            "smartphones",
+            "feature phones",
+            "accessories"
+          ]
+        },
+        "attributes": {
+          "operatingSystem": "Android, iOS",
+          "screenSize": "5-6 inches, 6-7 inches",
+          "storage": "64GB, 128GB, 256GB"
+        },
+        "children": [
+          {
+            "name": "Smartphones",
+            "parent": "6713c1c84ca922a0ac080fbd",
+            "metadata": {
+              "description": "Explore the latest smartphones from various brands.",
+              "keywords": ["smartphones", "mobile phones", "latest smartphones"]
+            },
+            "attributes": {
+              "camera": "Single, Dual, Triple",
+              "battery": "3000mAh, 4000mAh, 5000mAh"
+            },
+            "children": [
+              {
+                "name": "Android Phones",
+                "parent": "6713c22e2dbee6034816b692",
+                "metadata": {
+                  "description": "Discover a wide range of Android smartphones.",
+                  "keywords": ["Android phones", "Samsung", "OnePlus", "Xiaomi"]
+                },
+                "attributes": {
+                  "flagship": "Yes, No",
+                  "priceRange": "Under $300, $300 - $600, Above $600"
+                },
+                "children": [
+                  {
+                    "name": "Flagship Android Phones",
+                    "parent": "6713c277aa3394e3a1faca6e",
+                    "metadata": {
+                      "description": "Top-tier Android smartphones with premium features.",
+                      "keywords": [
+                        "flagship Android phones",
+                        "premium smartphones",
+                        "high-end devices"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "Budget Android Phones",
+                    "parent": "6713c277aa3394e3a1faca6e",
+                    "metadata": {
+                      "description": "Affordable Android smartphones for everyday use.",
+                      "keywords": [
+                        "budget Android phones",
+                        "affordable smartphones",
+                        "value for money"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "iPhones",
+                "parent": "6713c22e2dbee6034816b692",
+                "metadata": {
+                  "description": "Explore the latest iPhones from Apple.",
+                  "keywords": ["iPhones", "Apple smartphones", "iOS"]
+                },
+                "attributes": {
+                  "generation": "Latest, Older",
+                  "color": "Black, White, Gold, Red"
+                },
+                "children": [
+                  {
+                    "name": "Latest iPhones",
+                    "parent": "6713c3005eac6f44fc87f89c",
+                    "metadata": {
+                      "description": "The most recent iPhone models available.",
+                      "keywords": [
+                        "latest iPhones",
+                        "new iPhone models",
+                        "iPhone features"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "Refurbished iPhones",
+                    "parent": "6713c3005eac6f44fc87f89c",
+                    "metadata": {
+                      "description": "Certified refurbished iPhones at discounted prices.",
+                      "keywords": [
+                        "refurbished iPhones",
+                        "certified iPhones",
+                        "discounted iPhones"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "Accessories",
+                "parent": "6713c22e2dbee6034816b692",
+                "metadata": {
+                  "description": "Enhance your smartphone experience with accessories.",
+                  "keywords": [
+                    "smartphone accessories",
+                    "cases",
+                    "chargers",
+                    "headphones"
+                  ]
+                },
+                "attributes": {
+                  "type": "Case, Charger, Headphones",
+                  "compatibility": "Universal, Brand-Specific"
+                },
+                "children": [
+                  {
+                    "name": "Phone Cases",
+                    "parent": "6713c33fe78b05e1e92a102e",
+                    "metadata": {
+                      "description": "Protect your smartphone with stylish phone cases.",
+                      "keywords": [
+                        "phone cases",
+                        "protective cases",
+                        "smartphone covers"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "Chargers",
+                    "parent": "6713c33fe78b05e1e92a102e",
+                    "metadata": {
+                      "description": "Find reliable chargers for your smartphone.",
+                      "keywords": [
+                        "smartphone chargers",
+                        "fast chargers",
+                        "wireless chargers"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Feature Phones",
+            "slug": "feature-phones",
+            "parent": "6713c1c84ca922a0ac080fbd",
+            "ancestors": ["ELECTRONICS_ID", "MOBILE_ID"],
+            "path": "Electronics/Mobile/Feature Phones",
+            "metadata": {
+              "title": "Feature Phones",
+              "slug": "feature-phones",
+              "description": "Reliable and simple feature phones for everyday use.",
+              "keywords": [
+                "feature phones",
+                "basic phones",
+                "affordable phones"
+              ]
+            },
+            "attributes": {
+              "battery": "Basic, Long-lasting"
+            }
+          },
+          {
+            "name": "Accessories",
+            "slug": "mobile-accessories",
+            "parent": "6713c1c84ca922a0ac080fbd",
+            "ancestors": ["ELECTRONICS_ID", "MOBILE_ID"],
+            "path": "Electronics/Mobile/Accessories",
+            "metadata": {
+              "title": "Mobile Accessories",
+              "slug": "mobile-accessories",
+              "description": "Essential accessories for your mobile devices.",
+              "keywords": [
+                "mobile accessories",
+                "phone cases",
+                "chargers",
+                "headphones"
+              ]
+            },
+            "attributes": {
+              "type": "Universal, Brand-Specific"
+            }
+          }
+        ]
+      },
+
+      {
+        "name": "Laptops",
+        "slug": "laptops",
+        "parent": "6713c1a4a8913b3ad25b76c5",
+        "metadata": {
+          "title": "Laptops",
+          "slug": "laptops",
+          "description": "Explore a wide range of laptops for all your needs.",
+          "keywords": [
+            "laptops",
+            "notebooks",
+            "gaming laptops",
+            "laptop accessories"
+          ]
+        },
+        "attributes": {
+          "brand": "Dell, HP, Lenovo, Apple",
+          "processor": "Intel, AMD",
+          "screenSize": "13 inch, 15 inch, 17 inch"
+        },
+        "children": [
+          {
+            "name": "Notebooks",
+            "slug": "notebooks",
+            "parent": "6713c3f32295d2ee7c2ebbd2",
+            "ancestors": ["ELECTRONICS_ID", "6713c3f32295d2ee7c2ebbd2"],
+            "path": "Electronics/Laptops/Notebooks",
+            "metadata": {
+              "title": "Notebooks",
+              "slug": "notebooks",
+              "description": "Sleek and portable notebooks for everyday use.",
+              "keywords": ["notebooks", "portable laptops", "business laptops"]
+            }
+          },
+          {
+            "name": "Gaming Laptops",
+            "slug": "gaming-laptops",
+            "parent": "6713c3f32295d2ee7c2ebbd2",
+            "ancestors": ["ELECTRONICS_ID", "6713c3f32295d2ee7c2ebbd2"],
+            "path": "Electronics/Laptops/Gaming Laptops",
+            "metadata": {
+              "title": "Gaming Laptops",
+              "slug": "gaming-laptops",
+              "description": "High-performance laptops designed for gaming.",
+              "keywords": [
+                "gaming laptops",
+                "gaming PCs",
+                "high-performance laptops"
+              ]
+            },
+            "attributes": {
+              "graphicsCard": "NVIDIA, AMD",
+              "refreshRate": "60Hz, 120Hz, 144Hz"
+            }
+          },
+          {
+            "name": "Accessories",
+            "slug": "laptop-accessories",
+            "parent": "6713c3f32295d2ee7c2ebbd2",
+            "ancestors": ["ELECTRONICS_ID", "LAPTOPS_ID"],
+            "path": "Electronics/Laptops/Accessories",
+            "metadata": {
+              "title": "Laptop Accessories",
+              "slug": "laptop-accessories",
+              "description": "Essential accessories for your laptops.",
+              "keywords": [
+                "laptop accessories",
+                "mice",
+                "keyboards",
+                "laptop bags"
+              ]
+            },
+            "attributes": {
+              "type": "Mouse, Keyboard, Bag"
+            }
+          }
+        ]
+      },
+
+      {
+        "name": "Televisions",
+        "slug": "televisions",
+        "parent": "6713c1a4a8913b3ad25b76c5",
+        "ancestors": ["ELECTRONICS_ID"],
+        "path": "Electronics/Televisions",
+        "metadata": {
+          "title": "Televisions",
+          "slug": "televisions",
+          "description": "Explore a variety of televisions for your entertainment needs.",
+          "keywords": [
+            "televisions",
+            "LED TVs",
+            "OLED TVs",
+            "Smart TVs",
+            "TV accessories"
+          ]
+        },
+        "attributes": {
+          "screenType": "LED, OLED, QLED",
+          "resolution": "HD, 4K, 8K"
+        },
+        "children": [
+          {
+            "name": "Smart TVs",
+            "slug": "smart-tvs",
+            "parent": "6713c497813d929e6b52b485",
+            "ancestors": ["ELECTRONICS_ID", "6713c497813d929e6b52b485"],
+            "path": "Electronics/Televisions/Smart TVs",
+            "metadata": {
+              "title": "Smart TVs",
+              "slug": "smart-tvs",
+              "description": "Latest Smart TVs with built-in apps and internet connectivity.",
+              "keywords": ["smart TVs", "internet-enabled TVs", "4K TVs"]
+            },
+            "attributes": {
+              "voiceControl": "Yes, No",
+              "screenSize": "32 inch, 43 inch, 55 inch, 65 inch"
+            }
+          },
+          {
+            "name": "LED TVs",
+            "slug": "led-tvs",
+            "parent": "6713c497813d929e6b52b485",
+            "ancestors": ["ELECTRONICS_ID", "6713c497813d929e6b52b485"],
+            "path": "Electronics/Televisions/LED TVs",
+            "metadata": {
+              "title": "LED TVs",
+              "slug": "led-tvs",
+              "description": "Affordable LED TVs with great picture quality.",
+              "keywords": ["LED TVs", "budget TVs", "HD TVs"]
+            },
+            "attributes": {
+              "screenSize": "32 inch, 40 inch, 50 inch"
+            }
+          },
+          {
+            "name": "Accessories",
+            "slug": "tv-accessories",
+            "parent": "6713c497813d929e6b52b485",
+            "ancestors": ["ELECTRONICS_ID", "6713c497813d929e6b52b485"],
+            "path": "Electronics/Televisions/Accessories",
+            "metadata": {
+              "title": "TV Accessories",
+              "slug": "tv-accessories",
+              "description": "Essential accessories for your televisions.",
+              "keywords": ["TV accessories", "cables", "mounts", "speakers"]
+            },
+            "attributes": {
+              "type": "Wall Mount, HDMI Cable, Soundbar"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clothings": {
+    "name": "Clothing",
+    "parent": null,
+    "metadata": {
+      "description": "A wide range of clothing for all occasions.",
+      "keywords": ["clothing", "fashion", "apparel"]
+    },
+    "attributes": {
+      "season": "All Year",
+      "material": "Various",
+      "sizeRange": "S, M, L, XL",
+      "colorOptions": "Multiple"
+    },
+    "children": [
+      {
+        "name": "Men's Clothing",
+        "parent": "6713d0b26a8fe37705b6bf92",
+        "metadata": {
+          "description": "Fashionable clothing options for men.",
+          "keywords": ["men's clothing", "men's fashion", "apparel"]
+        },
+        "attributes": {
+          "style": "Casual, Formal, Sportswear",
+          "fabric": "Cotton, Polyester, Wool"
+        },
+        "children": [
+          {
+            "name": "T-Shirts",
+            "parent": "6713d0ea576e6449a3983790",
+            "metadata": {
+              "description": "Stylish t-shirts for men.",
+              "keywords": ["t-shirts", "men's t-shirts", "casual wear"]
+            },
+            "attributes": {
+              "fit": "Regular, Slim",
+              "sleeveLength": "Short, Long",
+              "printType": "Graphic, Solid"
+            },
+            "children": [
+              {
+                "name": "V-Neck T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Comfortable V-neck t-shirts for a stylish look.",
+                  "keywords": ["v-neck t-shirts", "men's v-neck", "casual wear"]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "material": "Cotton, Polyester, Blended"
+                }
+              },
+              {
+                "name": "Crew Neck T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Classic crew neck t-shirts for casual wear.",
+                  "keywords": [
+                    "crew neck t-shirts",
+                    "round neck",
+                    "casual wear"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "material": "Cotton, Polyester, Blended"
+                }
+              },
+              {
+                "name": "Polo T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Smart polo t-shirts for semi-casual occasions.",
+                  "keywords": [
+                    "polo t-shirts",
+                    "collared t-shirts",
+                    "semi-casual"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "collarType": "Collared"
+                }
+              },
+              {
+                "name": "Henley T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Henley t-shirts with buttoned necklines for a rugged look.",
+                  "keywords": [
+                    "henley t-shirts",
+                    "buttoned t-shirts",
+                    "rugged wear"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "material": "Cotton, Wool, Blended"
+                }
+              },
+              {
+                "name": "Graphic T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Graphic t-shirts with unique designs and prints.",
+                  "keywords": [
+                    "graphic t-shirts",
+                    "printed t-shirts",
+                    "casual wear"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "printType": "Graphic"
+                }
+              },
+              {
+                "name": "Solid T-Shirts",
+                "parent": "6713d1076606c231f3095fc2",
+                "metadata": {
+                  "description": "Plain solid-colored t-shirts for versatile wear.",
+                  "keywords": ["solid t-shirts", "plain t-shirts", "basic wear"]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "printType": "Solid"
+                }
+              },
+              {
+                "name": "Casual",
+                "parent": "T_SHIRTS_ID",
+                "metadata": {
+                  "description": "Relaxed and comfortable casual t-shirts for everyday wear.",
+                  "keywords": [
+                    "casual t-shirts",
+                    "men's casual wear",
+                    "everyday t-shirts"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "material": "Cotton, Polyester, Blended",
+                  "style": "V-Neck, Crew Neck, Henley"
+                }
+              },
+              {
+                "name": "Sports",
+                "parent": "T_SHIRTS_ID",
+                "metadata": {
+                  "description": "Performance-focused sports t-shirts for active lifestyles.",
+                  "keywords": [
+                    "sports t-shirts",
+                    "athletic wear",
+                    "men's sportswear"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Regular, Slim",
+                  "sleeveLength": "Short, Long",
+                  "material": "Polyester, Dry-Fit, Mesh",
+                  "features": "Moisture-Wicking, Quick-Dry, Breathable"
+                }
+              },
+              {
+                "name": "Formal",
+                "parent": "T_SHIRTS_ID",
+                "metadata": {
+                  "description": "Elegant and stylish formal t-shirts, perfect for smart casual occasions.",
+                  "keywords": [
+                    "formal t-shirts",
+                    "smart casual t-shirts",
+                    "men's formal wear"
+                  ]
+                },
+                "attributes": {
+                  "fit": "Slim, Regular",
+                  "sleeveLength": "Short, Long",
+                  "material": "Cotton, Linen, Blended",
+                  "style": "Polo, Buttoned Henley, Solid"
+                }
+              }
+            ]
+          },
+          {
+            "name": "Jeans",
+            "parent": "6713d0ea576e6449a3983790",
+            "metadata": {
+              "description": "Comfortable jeans for everyday wear.",
+              "keywords": ["jeans", "men's jeans", "denim"]
+            },
+            "attributes": {
+              "fit": "Straight, Slim, Bootcut",
+              "washType": "Light, Dark, Distressed"
+            }
+          },
+          {
+            "name": "Jackets",
+            "parent": "6713d0ea576e6449a3983790",
+            "metadata": {
+              "description": "Stylish jackets for men.",
+              "keywords": ["jackets", "men's jackets", "outerwear"]
+            },
+            "attributes": {
+              "style": "Bomber, Blazer, Denim",
+              "lining": "Insulated, Unlined"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Women's Clothing",
+        "parent": "6713d0b26a8fe37705b6bf92",
+        "metadata": {
+          "description": "Fashionable clothing options for women.",
+          "keywords": ["women's clothing", "women's fashion", "apparel"]
+        },
+        "attributes": {
+          "style": "Casual, Formal, Party",
+          "fabric": "Silk, Cotton, Polyester"
+        },
+        "children": [
+          {
+            "name": "Dresses",
+            "parent": "6713d12b6606c231f3095fce",
+            "metadata": {
+              "description": "Elegant dresses for various occasions.",
+              "keywords": ["dresses", "women's dresses", "evening wear"]
+            },
+            "attributes": {
+              "length": "Short, Midi, Long",
+              "sleeveLength": "Sleeveless, Long Sleeve",
+              "occasion": "Casual, Formal"
+            }
+          },
+          {
+            "name": "Tops",
+            "parent": "6713d12b6606c231f3095fce",
+            "metadata": {
+              "description": "Stylish tops for women.",
+              "keywords": ["tops", "women's tops", "fashion wear"]
+            },
+            "attributes": {
+              "style": "Blouse, T-Shirt, Tank",
+              "fit": "Loose, Fitted"
+            }
+          },
+          {
+            "name": "Skirts",
+            "parent": "6713d12b6606c231f3095fce",
+            "metadata": {
+              "description": "Trendy skirts for women.",
+              "keywords": ["skirts", "women's skirts", "fashion"]
+            },
+            "attributes": {
+              "length": "Mini, Midi, Maxi",
+              "fit": "A-line, Pencil, Pleated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Kids' Clothing",
+        "parent": "6713d0b26a8fe37705b6bf92",
+        "metadata": {
+          "description": "Cute and comfortable clothing for kids.",
+          "keywords": ["kids' clothing", "children's fashion", "apparel"]
+        },
+        "attributes": {
+          "ageGroup": "0-12 years",
+          "style": "Casual, Playwear"
+        },
+        "children": [
+          {
+            "name": "T-Shirts",
+            "parent": "6713d15f87ab52caf7e48f29",
+            "metadata": {
+              "description": "Colorful t-shirts for kids.",
+              "keywords": ["kids t-shirts", "children's wear", "casual"]
+            },
+            "attributes": {
+              "fit": "Regular, Loose",
+              "sleeveLength": "Short, Long"
+            }
+          },
+          {
+            "name": "Shorts",
+            "parent": "6713d15f87ab52caf7e48f29",
+            "metadata": {
+              "description": "Comfortable shorts for kids.",
+              "keywords": ["kids shorts", "children's wear", "play"]
+            },
+            "attributes": {
+              "length": "Knee, Above Knee",
+              "fit": "Regular, Loose"
+            }
+          },
+          {
+            "name": "Jackets",
+            "parent": "6713d15f87ab52caf7e48f29",
+            "metadata": {
+              "description": "Warm jackets for children.",
+              "keywords": ["kids jackets", "outerwear", "warmth"]
+            },
+            "attributes": {
+              "style": "Hooded, Unhooded",
+              "lining": "Insulated, Non-insulated"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

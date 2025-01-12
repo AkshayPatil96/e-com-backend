@@ -1,0 +1,107 @@
+Electronics Category Structure
+
+
+Mobile
+
+Smartphones
+Feature Phones
+Accessories (cases, chargers, etc.)
+
+
+Laptops
+
+Notebooks
+Gaming Laptops
+Accessories (mice, keyboards, etc.)
+
+
+Televisions
+
+LED TVs
+OLED TVs
+Smart TVs
+Accessories (mounts, cables, etc.)
+
+
+Cameras
+
+Digital Cameras
+DSLR Cameras
+Action Cameras
+Accessories (lenses, tripods, etc.)
+
+
+Audio & Headphones
+
+Headphones
+Earbuds
+Speakers
+Home Theater Systems
+
+
+Wearable Technology
+
+Smartwatches
+Fitness Trackers
+VR Headsets
+
+
+Home Appliances
+
+Refrigerators
+Washing Machines
+Microwaves
+Air Conditioners
+
+
+Gaming Consoles
+
+PlayStation
+Xbox
+Nintendo Switch
+Accessories (controllers, VR kits, etc.)
+
+
+Tablets
+
+Standard Tablets
+E-Readers
+Accessories (covers, keyboards, etc.)
+
+
+Networking Devices
+
+Routers
+Modems
+Range Extenders
+Network Switches
+
+
+Storage Devices
+
+External Hard Drives
+SSDs
+USB Flash Drives
+
+
+Smart Home Devices
+
+Smart Speakers
+Smart Lights
+Security Cameras
+Smart Thermostats
+
+
+Drones
+
+Consumer Drones
+Racing Drones
+Accessories (batteries, chargers, etc.)
+
+
+PC Components
+
+Graphics Cards
+Motherboards
+RAM
+Power Supplies

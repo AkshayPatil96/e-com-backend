@@ -1,0 +1,15 @@
+// src/routes/sellerRoutes.ts
+import { Router } from "express";
+import sellerController from "../controller/seller";
+
+const router = Router();
+
+router.post("/", sellerController.createSeller);
+router.put("/:id", sellerController.updateSeller);
+router.get("/:slug", sellerController.getSellerBySlug);
+router.get("/", sellerController.getAllSellers);
+router.delete("/soft-delete/:id", sellerController.softDeleteSeller);
+router.put("/restore/:id", sellerController.restoreSeller);
+router.delete("/:id", sellerController.deleteSeller);
+
+export default router;

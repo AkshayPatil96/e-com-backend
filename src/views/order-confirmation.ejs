@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Order Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+
+      h1 {
+        background-color: #007bff;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      /* div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      } */
+
+      h2 {
+        margin-top: 20px;
+        font-size: 24px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      li strong {
+        font-weight: bold;
+      }
+
+      p {
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Order Confirmation</h1>
+    <p>Thank you for your order!</p>
+
+    <div>
+      <h2>Order Details:</h2>
+      <ul>
+        <li><strong>Order ID:</strong> <%= order._id %></li>
+        <li><strong>Course Name:</strong> <%= order.name %></li>
+        <li><strong>Price:</strong> $<%= order.price.toFixed(2) %></li>
+        <li><strong>Order Date:</strong> <%= order.date %></li>
+      </ul>
+    </div>
+
+    <p>We will process your order as soon as possible.</p>
+
+    <p>
+      If you have any questions or concerns, please contact our customer
+      support.
+    </p>
+
+    <p>Thank you for choosing our service!</p>
+  </body>
+</html>
