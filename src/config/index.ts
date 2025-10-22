@@ -20,12 +20,13 @@ type ENV = {
   SMTP_SERVICE: string;
   SMTP_MAIL: string;
   SMTP_PASSWORD: string;
-  // AWS_ACCESS_KEY: string;
-  // AWS_SECRET_KEY: string;
-  // AWS_REGION: string;
-  // AWS_BUCKET_NAME: string;
-  // IMGURL: string;
-  // REPLY_EMAIL: string;
+
+  // AWS Configuration
+  AWS_ACCESS_KEY_ID: string;
+  AWS_SECRET_ACCESS_KEY: string;
+  AWS_REGION: string;
+  AWS_S3_BUCKET_NAME: string;
+  AWS_CLOUDFRONT_URL?: string;
 };
 
 const config: ENV = {
@@ -35,15 +36,15 @@ const config: ENV = {
     "development",
   WHITELIST:
     process.env.WHITELIST?.split(",").map((origin) => origin.trim()) || [],
-  MONGO_URI: process.env.MONGO_URI || "mongodb://localhost:27017/mydb",
-  REDIS_URI: process.env.REDIS_URI || "redis://localhost:6379",
-  FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:3000",
+  MONGO_URI: process.env.MONGO_URI as string,
+  REDIS_URI: process.env.REDIS_URI as string,
+  FRONTEND_URL: process.env.FRONTEND_URL as string,
 
   JWT_SECRET: process.env.JWT_SECRET as string,
   JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET as string,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "15m",
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN as string,
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
-  JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES || "7d",
+  JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN as string,
 
   SMTP_HOST: process.env.SMTP_HOST as string,
   SMTP_PORT: process.env.SMTP_PORT as unknown as string,
@@ -51,12 +52,12 @@ const config: ENV = {
   SMTP_MAIL: process.env.SMTP_MAIL as string,
   SMTP_PASSWORD: process.env.SMTP_PASSWORD as string,
 
-  // AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY as string,
-  // AWS_SECRET_KEY: process.env.AWS_SECRET_KEY as string,
-  // AWS_REGION: process.env.AWS_REGION as string,
-  // AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
-  // IMGURL: process.env.IMGURL as string,
-  // REPLY_EMAIL: process.env.REPLY_EMAIL as string,
+  // AWS Configuration
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID as string,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY as string,
+  AWS_REGION: process.env.AWS_REGION as string,
+  AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME as string,
+  AWS_CLOUDFRONT_URL: process.env.AWS_CLOUDFRONT_URL,
 };
 
 export default config;

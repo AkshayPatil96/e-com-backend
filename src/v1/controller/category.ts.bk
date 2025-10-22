@@ -14,7 +14,7 @@ import {
   softDeleteCategoryService,
   subcategoriesBySlugAndLevel,
   updateCategoryService,
-} from "../services/category.service";
+} from "../services/category.service.ts.bk";
 import ErrorHandler from "../../utils/ErrorHandler";
 
 const categoryController = {

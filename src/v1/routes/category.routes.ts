@@ -1,68 +1,42 @@
-import { Router } from "express";
-import categoryController from "../controller/category";
-import { authorizeRoles, isAuthenticated } from "../../middleware/auth";
+import express from "express";
+import categoryController from "../controller/category/category";
 
-const router = Router();
+const router = express.Router();
 
-//! Global routes here
-router.get(
-  "/:slug/subcategories",
-  categoryController.getCategoryWithSubcategories,
-);
-// GET /category/electronics/subcategories
-router.get("/parents", categoryController.getAllParentCategories);
-// GET /category/parents
-router.get("/nested", categoryController.getCategoriesNested);
-// GET /category/nested
-router.get("/:slug", categoryController.getCategoryBySlug);
-// GET /category/electronics
-router.get(
-  "/:slug/subcategories/:level",
-  categoryController.getSubcategoriesBySlugAndLevel,
-);
-// GET /category/electronics/subcategories/2
-router.get("/level/:level", categoryController.getAllCategoriesByLevel);
-// GET /category/level/2
-router.get("/searching", categoryController.getCategoriesBySearch);
-// GET /category/search?name=electr
+/**
+ * Public Category Routes
+ * These APIs are accessible to all users (no authentication required)
+ * Returns only public/safe category information
+ */
 
-router.get("/", categoryController.getAllCategories);
+/**
+ * @route   GET /api/v1/categories/search
+ * @desc    Search categories for public use (autocomplete, infinite scroll, etc.)
+ * @query   q?, limit?, page?, activeOnly?
+ * @access  Public
+ */
+router.get("/search", categoryController.searchCategoriesPublic);
 
-//! Admin routes here
-router.post(
-  "/",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  categoryController.addCategory,
-);
-// POST /category
-router.put(
-  "/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  categoryController.updateCategory,
-);
-// PUT /category/1
-router.delete(
-  "/soft-delete/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  categoryController.softDeleteCategory,
-);
-// DELETE /category/soft-delete/1
-router.put(
-  "/restore/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  categoryController.restoreCategory,
-);
-// PUT /category/restore/1
-router.delete(
-  "/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  categoryController.deleteCategory,
-);
-// DELETE /category/1
+/**
+ * @route   GET /api/v1/categories/hierarchy
+ * @desc    Get public category hierarchy for navigation/menus
+ * @access  Public
+ */
+router.get("/hierarchy", categoryController.getCategoryHierarchyPublic);
+
+/**
+ * @route   GET /api/v1/categories
+ * @desc    Get categories with pagination for public use
+ * @query   page?, limit?, search?, parent?, level?
+ * @access  Public
+ */
+router.get("/", categoryController.getAllCategoriesPublic);
+
+/**
+ * @route   GET /api/v1/categories/:slug
+ * @desc    Get category by slug for public viewing
+ * @access  Public
+ */
+router.get("/:slug", categoryController.getCategoryBySlugPublic);
 
 export default router;

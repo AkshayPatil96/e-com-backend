@@ -1,0 +1,67 @@
+Here’s the proper sequence for adding core entities in your e-commerce platform:
+
+User
+(Create admin/seller accounts first, so you have someone to own/manage products.)
+
+Brand
+(Brands are often referenced by products and categories.)
+
+Category
+(Products must belong to a category.)
+
+Seller
+(If your platform supports multiple sellers, add them before products.)
+
+Product
+(Products reference brand, category, and seller.)
+
+Variation
+(Variations—like size/color—are always linked to a product.)
+
+
+=================================================================
+
+Who Should Add What?
+1. Categories & Brands
+Who: Only admin or superadmin
+Why:
+Keeps taxonomy clean and avoids duplicates.
+Sellers should only select from existing categories/brands.
+2. Products
+Who:
+Sellers: Can add and manage their own products (but only in approved categories/brands).
+Admin/Superadmin: Can add, edit, or remove any product (for moderation, featured products, or in case of B2C/own-brand sales).
+3. Variations (SKUs)
+Who:
+Sellers: For their own products.
+Admin/Superadmin: For any product (for corrections or bulk uploads).
+4. Orders
+Who:
+Users: Place orders.
+Sellers: See/manage orders for their products.
+Admin/Superadmin: View all orders, manage disputes, refunds, etc.
+5. Users
+Who:
+Self-registration: For customers and sellers.
+Admin/Superadmin: Can create admin accounts, approve sellers, or manage users.
+6. Admins
+Who:
+Superadmin: Can create admins and other superadmins (if you allow).
+Admin: Can create other admins only if permissions.admins.canCreate: true.
+Portfolio Project Tips (for 3+ Years Experience):
+RBAC (Role-Based Access Control):
+Implement middleware to enforce these permissions at the API level.
+Audit Trails:
+Log who created/edited/deleted what (great for admin panels and interviews).
+Approval Flows:
+Optionally, products added by sellers require admin approval before going live.
+Soft Deletes:
+Use isDeleted for all major entities.
+Bulk Operations:
+Allow admins to bulk import/export products/categories.
+Activity Logs:
+Show recent actions in the admin dashboard.
+API Documentation:
+Use Swagger/OpenAPI for your endpoints.
+Testing:
+Add unit/integration tests for permission logic and critical flows.

@@ -1,19 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { IProductVersion } from "../@types/productVersion";
+/**
+ * Simple ProductVersion Model Re-export
+ * Points to the organized structure in the productVersion folder
+ */
 
-const productVersionSchema = new Schema<IProductVersion>(
-  {
-    productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-    versionNumber: { type: Number, required: true },
-    versionData: { type: Schema.Types.Mixed, required: true },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  },
-  { timestamps: true },
-);
-
-const ProductVersion = mongoose.model<IProductVersion>(
-  "ProductVersion",
-  productVersionSchema,
-);
-
-export default ProductVersion;
+// Re-export the ProductVersion model from the organized structure
+export { default } from "./productVersion/index";

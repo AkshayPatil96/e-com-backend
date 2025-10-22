@@ -1,0 +1,41 @@
+<%- /*
+  Template variables:
+  - user: { name, email }
+  - password: string
+  - loginUrl: string
+*/ -%>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Your Admin Account Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #222; }
+    .container { max-width: 500px; margin: 0 auto; padding: 24px; border: 1px solid #eee; border-radius: 8px; }
+    .header { font-size: 1.2em; margin-bottom: 16px; }
+    .info { background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 16px; }
+    .cta { margin-top: 20px; }
+    .cta a { background: #007bff; color: #fff; padding: 10px 18px; border-radius: 4px; text-decoration: none; }
+    .note { color: #b85c00; font-size: 0.95em; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">Welcome, <%= user.name %>!</div>
+    <div class="info">
+      <p>Your admin account has been created. Here are your login details:</p>
+      <ul>
+        <li><strong>Email:</strong> <%= user.email %></li>
+        <li><strong>Temporary Password:</strong> <%= password %></li>
+      </ul>
+    </div>
+    <div class="cta">
+      <a href="<%= loginUrl %>">Login to your account</a>
+    </div>
+    <div class="note">
+      <strong>Important:</strong> This is a temporary password. You will be prompted to change it after your first login for security reasons.
+    </div>
+  </div>
+</body>
+</html>

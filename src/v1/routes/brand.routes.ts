@@ -1,40 +1,35 @@
 import { Router } from "express";
-import { authorizeRoles, isAuthenticated } from "../../middleware/auth";
-import brandController from "../controller/brand";
+import { RateLimiter } from "../../middleware/rateLimiter";
+import brandController from "../controller/brand/brand.controller";
 
 const router = Router();
 
-router.post(
-  "/",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  brandController.addBrand,
+// ================================
+// PUBLIC BRAND ROUTES
+// ================================
+
+/**
+ * Search brands for public use
+ * @route GET /brands/search
+ * @access Public
+ * @rate 100 requests per hour per IP
+ */
+router.get(
+  "/search",
+  // RateLimiter.apiLimiter(100, 60 * 60 * 1000), // 100 requests per hour
+  brandController.searchBrandsPublic,
 );
-router.put(
-  "/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  brandController.updateBrand,
-);
-router.get("/", brandController.getBrands);
-router.get("/:slug", brandController.getBrand);
-router.delete(
-  "/soft-delete/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  brandController.softDeleteBrand,
-);
-router.put(
-  "/restore/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  brandController.restoreBrand,
-);
-router.delete(
-  "/:id",
-  isAuthenticated,
-  authorizeRoles("admin", "superadmin"),
-  brandController.deleteBrand,
+
+/**
+ * Get brand by slug for public viewing
+ * @route GET /brands/:slug
+ * @access Public
+ * @rate 200 requests per hour per IP
+ */
+router.get(
+  "/:slug",
+  // RateLimiter.apiLimiter(200, 60 * 60 * 1000), // 200 requests per hour
+  brandController.getBrandBySlugPublic,
 );
 
 export default router;

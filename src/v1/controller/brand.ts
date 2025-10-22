@@ -44,7 +44,7 @@ const brandController = {
     async (req: Request, res: Response, next: NextFunction) => {
       let { slug } = req.params;
       const brand = await getBrandById(slug);
-      
+
       res.status(200).json({
         success: true,
         message: "Brand fetched successfully",

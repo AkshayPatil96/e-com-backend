@@ -1,0 +1,1697 @@
+# Frontend Developer Guide - Seller Management System
+
+## Table of Contents
+1. [TypeScript Types & Enums](#typescript-types--enums)
+2. [API Endpoints Reference](#api-endpoints-reference)
+3. [RTK Query Implementation](#rtk-query-implementation)
+4. [Custom Implementation Guides](#custom-implementation-guides)
+5. [React Component Examples](#react-component-examples)
+6. [Error Handling](#error-handling)
+7. [File Upload Implementation](#file-upload-implementation)
+8. [Best Practices](#best-practices)
+
+---
+
+## TypeScript Types & Enums
+
+### Core Enums
+```typescript
+// Seller Status
+export enum SellerStatus {
+  ACTIVE = 'active',
+  SUSPENDED = 'suspended',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  INACTIVE = 'inactive'
+}
+
+// Seller Sort Options
+export enum SellerSortBy {
+  STORE_NAME = 'storeName',
+  CREATED_AT = 'createdAt',
+  JOINED_DATE = 'joinedDate',
+  TOTAL_SALES = 'totalSales',
+  TOTAL_ORDERS = 'totalOrders',
+  AVERAGE_RATING = 'averageRating'
+}
+
+// Sort Order
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc'
+}
+
+// Bulk Actions
+export enum SellerBulkAction {
+  ACTIVATE = 'activate',
+  SUSPEND = 'suspend',
+  DELETE = 'delete',
+  RESTORE = 'restore',
+  VERIFY = 'verify',
+  UNVERIFY = 'unverify',
+  FEATURE = 'feature',
+  UNFEATURE = 'unfeature',
+  APPROVE = 'approve',
+  REJECT = 'reject'
+}
+
+// Filter Options
+export enum SellerFilterStatus {
+  ALL = 'all',
+  ACTIVE = 'active',
+  SUSPENDED = 'suspended',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  INACTIVE = 'inactive'
+}
+
+export enum SellerFilterVerified {
+  ALL = 'all',
+  VERIFIED = 'verified',
+  UNVERIFIED = 'unverified'
+}
+
+export enum SellerFilterFeatured {
+  ALL = 'all',
+  FEATURED = 'featured',
+  NOT_FEATURED = 'not-featured'
+}
+```
+
+### Core Interfaces
+```typescript
+// Base Seller Types
+export interface ISellerImage {
+  url: string;
+  alt: string;
+  s3Key?: string;
+  bucket?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+  format?: string;
+  uploadMethod?: string;
+  originalUrl?: string;
+  isPrimary?: boolean;
+  isProcessed?: boolean;
+  processingStatus?: string;
+  uploadedAt?: Date;
+  processedAt?: Date;
+}
+
+export interface ISellerBanner extends ISellerImage {}
+
+export interface ISellerAddress {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  isDefault?: boolean;
+  type?: 'business' | 'billing' | 'shipping';
+}
+
+export interface ISellerSocialLinks {
+  website?: string;
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+  youtube?: string;
+  linkedin?: string;
+}
+
+export interface ISellerRatings {
+  averageRating: number;
+  totalRatings: number;
+  ratingBreakdown: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
+}
+
+export interface ISellerPolicies {
+  returnPolicy?: string;
+  shippingPolicy?: string;
+  privacyPolicy?: string;
+  termsOfService?: string;
+}
+
+// Admin Filter Interface
+export interface ISellerAdminFilters {
+  page: number;
+  limit: number;
+  search: string;
+  status: SellerFilterStatus;
+  verified: SellerFilterVerified;
+  featured: SellerFilterFeatured;
+  isDeleted: boolean;
+  sortBy: SellerSortBy;
+  sortOrder: SortOrder;
+  category?: string;
+  minSales?: number;
+  maxSales?: number;
+  minRating?: number;
+  maxRating?: number;
+}
+
+// Admin List Item (for table display)
+export interface ISellerAdminItem {
+  _id: string;
+  storeName: string;
+  slug: string;
+  contactEmail: string;
+  phoneNumber?: string;
+  status: SellerStatus;
+  isVerified: boolean;
+  isDeleted: boolean;
+  isFeatured: boolean;
+  isTopSeller: boolean;
+  image?: {
+    url: string;
+    alt: string;
+  };
+  totalSales: number;
+  totalOrders: number;
+  totalProducts: number;
+  averageRating: number;
+  totalRatings: number;
+  commissionRate: number;
+  joinedDate: Date;
+  lastActiveDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Admin List Response
+export interface ISellerAdminListResponse {
+  data: ISellerAdminItem[];
+  totalCount: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+// Search Item (for autocomplete)
+export interface ISellerSearchItem {
+  _id: string;
+  storeName: string;
+  slug: string;
+  contactEmail: string;
+  status: SellerStatus;
+  isVerified: boolean;
+  image?: {
+    url: string;
+    alt: string;
+  };
+}
+
+// Search Response
+export interface ISellerSearchResponse {
+  results: ISellerSearchItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    totalCount: number;
+    hasMore: boolean;
+    count: number;
+  };
+  query: string;
+}
+
+// Create Seller Body
+export interface ICreateSellerAdminBody {
+  userId: string;
+  storeName: string;
+  storeDescription?: string;
+  categories?: string[];
+  contactEmail: string;
+  phoneNumber?: string;
+  alternatePhone?: string;
+  addresses?: ISellerAddress[];
+  image?: ISellerImage | string;
+  banner?: ISellerBanner | string;
+  socialLinks?: ISellerSocialLinks;
+  commissionRate?: number;
+  isVerified?: boolean;
+  isFeatured?: boolean;
+  isTopSeller?: boolean;
+  status?: SellerStatus;
+  policies?: ISellerPolicies;
+}
+
+// Update Seller Body
+export interface IUpdateSellerAdminBody extends Partial<ICreateSellerAdminBody> {}
+
+// Bulk Action Body
+export interface ISellerBulkActionBody {
+  sellerIds: string[];
+  action: SellerBulkAction;
+}
+
+// Statistics Interface
+export interface ISellerStatistics {
+  totalSellers: number;
+  activeSellers: number;
+  pendingSellers: number;
+  suspendedSellers: number;
+  verifiedSellers: number;
+  featuredSellers: number;
+  topSellers: number;
+  deletedSellers: number;
+  totalSales: number;
+  averageCommissionRate: number;
+  newSellersThisMonth: number;
+  newSellersLastMonth: number;
+  statusBreakdown: {
+    active: number;
+    suspended: number;
+    pending: number;
+    rejected: number;
+    inactive: number;
+  };
+  verificationBreakdown: {
+    verified: number;
+    unverified: number;
+  };
+}
+
+// File Upload Types
+export interface IUploadUrlRequest {
+  fileTypes: ('image' | 'banner')[];
+  externalUrls?: {
+    [key: string]: string;
+  };
+}
+
+export interface IUploadUrlResponse {
+  uploadUrls: {
+    [key: string]: {
+      uploadUrl: string;
+      key: string;
+      publicUrl: string;
+      fileType: string;
+      expiresAt: string;
+    };
+  };
+  externalResults: {
+    [key: string]: {
+      success: boolean;
+      url?: string;
+      s3Key?: string;
+      error?: string;
+    };
+  };
+}
+
+export interface IProcessImageRequest {
+  uploads: {
+    [key: string]: {
+      tempKey: string;
+      filename: string;
+      originalName?: string;
+    };
+  };
+}
+```
+
+---
+
+## API Endpoints Reference
+
+### Base URL
+```
+Production: https://your-domain.com/api/v1
+Development: http://localhost:5000/api/v1
+```
+
+### Authentication
+All admin endpoints require:
+- Authorization header: `Bearer ${token}`
+- User must have admin/superadmin role
+- Specific permissions for each operation
+
+### Admin Endpoints
+
+#### 1. Get All Sellers
+```
+GET /admin/sellers
+Query Parameters:
+- page: number (default: 1)
+- limit: number (default: 20, max: 100)
+- search: string (optional)
+- status: 'all' | 'active' | 'suspended' | 'pending' | 'rejected' | 'inactive'
+- verified: 'all' | 'verified' | 'unverified'
+- featured: 'all' | 'featured' | 'not-featured'
+- isDeleted: boolean (default: false)
+- sortBy: 'storeName' | 'createdAt' | 'joinedDate' | 'totalSales' | 'totalOrders' | 'averageRating'
+- sortOrder: 'asc' | 'desc'
+- category: string (optional)
+- minSales: number (optional)
+- maxSales: number (optional)
+- minRating: number (optional)
+- maxRating: number (optional)
+
+Response: ISellerAdminListResponse
+```
+
+#### 2. Get Seller by ID
+```
+GET /admin/sellers/:id
+Response: Full seller object with populated fields
+```
+
+#### 3. Create Seller
+```
+POST /admin/sellers
+Body: ICreateSellerAdminBody
+Response: Created seller object
+```
+
+#### 4. Update Seller
+```
+PUT /admin/sellers/:id
+Body: IUpdateSellerAdminBody
+Response: Updated seller object
+```
+
+#### 5. Delete Seller (Soft Delete)
+```
+DELETE /admin/sellers/:id
+Response: Success message with deletion details
+```
+
+#### 6. Restore Seller
+```
+PUT /admin/sellers/:id/restore
+Response: Restored seller object
+```
+
+#### 7. Toggle Seller Status
+```
+PUT /admin/sellers/:id/toggle-status
+Response: Success message with new status
+```
+
+#### 8. Search Sellers
+```
+GET /admin/sellers/search
+Query Parameters:
+- q: string (search query)
+- limit: number (default: 20, max: 50)
+- page: number (default: 1)
+- includeDeleted: boolean (default: false)
+
+Response: ISellerSearchResponse
+```
+
+#### 9. Get Seller Statistics
+```
+GET /admin/sellers/statistics
+Response: ISellerStatistics
+```
+
+#### 10. Bulk Actions
+```
+POST /admin/sellers/bulk-action
+Body: ISellerBulkActionBody
+Response: Bulk action result with success/failure counts
+```
+
+#### 11. Generate Upload URLs
+```
+POST /admin/sellers/upload-urls
+Body: IUploadUrlRequest
+Response: IUploadUrlResponse
+```
+
+#### 12. Process Uploaded Images
+```
+POST /admin/sellers/process-images
+Body: IProcessImageRequest
+Response: Processed image data
+```
+
+#### 13. Update Seller Image
+```
+PUT /admin/sellers/:id/image
+Body: {
+  imageData?: ISellerImage,
+  externalUrl?: string,
+  deleteFromS3?: boolean
+}
+Response: Updated seller with new image
+```
+
+#### 14. Update Seller Banner
+```
+PUT /admin/sellers/:id/banner
+Body: {
+  bannerData?: ISellerBanner,
+  externalUrl?: string,
+  deleteFromS3?: boolean
+}
+Response: Updated seller with new banner
+```
+
+### Public Endpoints
+
+#### 1. Search Sellers (Public)
+```
+GET /sellers/search
+Query Parameters:
+- q: string (search query)
+- limit: number (default: 20, max: 50)
+- page: number (default: 1)
+- activeOnly: boolean (default: true)
+
+Response: ISellerSearchResponse (filtered for public)
+```
+
+#### 2. Get Seller by Slug (Public)
+```
+GET /sellers/:slug
+Response: Public seller object (sensitive fields removed)
+```
+
+---
+
+## RTK Query Implementation
+
+### Base API Setup
+```typescript
+// api/baseApi.ts
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from '../store';
+
+export const baseApi = createApi({
+  reducerPath: 'api',
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1',
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ['Seller', 'SellerStats'],
+  endpoints: () => ({}),
+});
+```
+
+### Seller API Slice
+```typescript
+// api/sellerApi.ts
+import { baseApi } from './baseApi';
+import {
+  ISellerAdminFilters,
+  ISellerAdminListResponse,
+  ISellerAdminItem,
+  ICreateSellerAdminBody,
+  IUpdateSellerAdminBody,
+  ISellerBulkActionBody,
+  ISellerStatistics,
+  ISellerSearchResponse,
+  IUploadUrlRequest,
+  IUploadUrlResponse,
+  IProcessImageRequest,
+} from '../types/seller.types';
+
+export const sellerApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    // Get all sellers with filters
+    getSellers: builder.query<ISellerAdminListResponse, Partial<ISellerAdminFilters>>({
+      query: (filters = {}) => ({
+        url: '/admin/sellers',
+        params: {
+          page: 1,
+          limit: 20,
+          search: '',
+          status: 'all',
+          verified: 'all',
+          featured: 'all',
+          isDeleted: false,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+          ...filters,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({ type: 'Seller' as const, id: _id })),
+              { type: 'Seller', id: 'LIST' },
+            ]
+          : [{ type: 'Seller', id: 'LIST' }],
+    }),
+
+    // Get seller by ID
+    getSellerById: builder.query<ISellerAdminItem, string>({
+      query: (id) => `/admin/sellers/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Seller', id }],
+    }),
+
+    // Create seller
+    createSeller: builder.mutation<ISellerAdminItem, ICreateSellerAdminBody>({
+      query: (body) => ({
+        url: '/admin/sellers',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'Seller', id: 'LIST' }, 'SellerStats'],
+    }),
+
+    // Update seller
+    updateSeller: builder.mutation<ISellerAdminItem, { id: string; data: IUpdateSellerAdminBody }>({
+      query: ({ id, data }) => ({
+        url: `/admin/sellers/${id}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+        'SellerStats',
+      ],
+    }),
+
+    // Delete seller
+    deleteSeller: builder.mutation<{ success: boolean; message: string }, string>({
+      query: (id) => ({
+        url: `/admin/sellers/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+        'SellerStats',
+      ],
+    }),
+
+    // Restore seller
+    restoreSeller: builder.mutation<ISellerAdminItem, string>({
+      query: (id) => ({
+        url: `/admin/sellers/${id}/restore`,
+        method: 'PUT',
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+        'SellerStats',
+      ],
+    }),
+
+    // Toggle seller status
+    toggleSellerStatus: builder.mutation<{ success: boolean; message: string }, string>({
+      query: (id) => ({
+        url: `/admin/sellers/${id}/toggle-status`,
+        method: 'PUT',
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+        'SellerStats',
+      ],
+    }),
+
+    // Search sellers
+    searchSellers: builder.query<ISellerSearchResponse, {
+      q?: string;
+      limit?: number;
+      page?: number;
+      includeDeleted?: boolean;
+    }>({
+      query: (params) => ({
+        url: '/admin/sellers/search',
+        params,
+      }),
+      providesTags: [{ type: 'Seller', id: 'SEARCH' }],
+    }),
+
+    // Get seller statistics
+    getSellerStatistics: builder.query<ISellerStatistics, void>({
+      query: () => '/admin/sellers/statistics',
+      providesTags: ['SellerStats'],
+    }),
+
+    // Bulk actions
+    bulkActionSellers: builder.mutation<{
+      success: boolean;
+      message: string;
+      data: {
+        action: string;
+        total: number;
+        success: number;
+        failed: number;
+        errors?: string[];
+      };
+    }, ISellerBulkActionBody>({
+      query: (body) => ({
+        url: '/admin/sellers/bulk-action',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'Seller', id: 'LIST' }, 'SellerStats'],
+    }),
+
+    // Generate upload URLs
+    generateUploadUrls: builder.mutation<IUploadUrlResponse, IUploadUrlRequest>({
+      query: (body) => ({
+        url: '/admin/sellers/upload-urls',
+        method: 'POST',
+        body,
+      }),
+    }),
+
+    // Process uploaded images
+    processUploadedImages: builder.mutation<any, IProcessImageRequest>({
+      query: (body) => ({
+        url: '/admin/sellers/process-images',
+        method: 'POST',
+        body,
+      }),
+    }),
+
+    // Update seller image
+    updateSellerImage: builder.mutation<ISellerAdminItem, {
+      id: string;
+      imageData?: any;
+      externalUrl?: string;
+      deleteFromS3?: boolean;
+    }>({
+      query: ({ id, ...body }) => ({
+        url: `/admin/sellers/${id}/image`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+      ],
+    }),
+
+    // Update seller banner
+    updateSellerBanner: builder.mutation<ISellerAdminItem, {
+      id: string;
+      bannerData?: any;
+      externalUrl?: string;
+      deleteFromS3?: boolean;
+    }>({
+      query: ({ id, ...body }) => ({
+        url: `/admin/sellers/${id}/banner`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Seller', id },
+        { type: 'Seller', id: 'LIST' },
+      ],
+    }),
+
+    // Public endpoints
+    searchSellersPublic: builder.query<ISellerSearchResponse, {
+      q?: string;
+      limit?: number;
+      page?: number;
+      activeOnly?: boolean;
+    }>({
+      query: (params) => ({
+        url: '/sellers/search',
+        params,
+      }),
+    }),
+
+    getSellerBySlugPublic: builder.query<any, string>({
+      query: (slug) => `/sellers/${slug}`,
+    }),
+  }),
+});
+
+export const {
+  useGetSellersQuery,
+  useGetSellerByIdQuery,
+  useCreateSellerMutation,
+  useUpdateSellerMutation,
+  useDeleteSellerMutation,
+  useRestoreSellerMutation,
+  useToggleSellerStatusMutation,
+  useSearchSellersQuery,
+  useGetSellerStatisticsQuery,
+  useBulkActionSellersMutation,
+  useGenerateUploadUrlsMutation,
+  useProcessUploadedImagesMutation,
+  useUpdateSellerImageMutation,
+  useUpdateSellerBannerMutation,
+  useSearchSellersPublicQuery,
+  useGetSellerBySlugPublicQuery,
+} = sellerApi;
+```
+
+---
+
+## Custom Implementation Guides
+
+### 1. Advanced Filtering Hook
+```typescript
+// hooks/useSellerFilters.ts
+import { useState, useCallback, useMemo } from 'react';
+import { ISellerAdminFilters, SellerFilterStatus, SellerFilterVerified, SellerFilterFeatured, SellerSortBy, SortOrder } from '../types/seller.types';
+
+export const useSellerFilters = () => {
+  const [filters, setFilters] = useState<ISellerAdminFilters>({
+    page: 1,
+    limit: 20,
+    search: '',
+    status: SellerFilterStatus.ALL,
+    verified: SellerFilterVerified.ALL,
+    featured: SellerFilterFeatured.ALL,
+    isDeleted: false,
+    sortBy: SellerSortBy.CREATED_AT,
+    sortOrder: SortOrder.DESC,
+  });
+
+  const updateFilter = useCallback((key: keyof ISellerAdminFilters, value: any) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value,
+      page: key !== 'page' ? 1 : value, // Reset page when other filters change
+    }));
+  }, []);
+
+  const resetFilters = useCallback(() => {
+    setFilters({
+      page: 1,
+      limit: 20,
+      search: '',
+      status: SellerFilterStatus.ALL,
+      verified: SellerFilterVerified.ALL,
+      featured: SellerFilterFeatured.ALL,
+      isDeleted: false,
+      sortBy: SellerSortBy.CREATED_AT,
+      sortOrder: SortOrder.DESC,
+    });
+  }, []);
+
+  const hasActiveFilters = useMemo(() => {
+    return (
+      filters.search !== '' ||
+      filters.status !== SellerFilterStatus.ALL ||
+      filters.verified !== SellerFilterVerified.ALL ||
+      filters.featured !== SellerFilterFeatured.ALL ||
+      filters.isDeleted !== false ||
+      filters.category !== undefined ||
+      filters.minSales !== undefined ||
+      filters.maxSales !== undefined ||
+      filters.minRating !== undefined ||
+      filters.maxRating !== undefined
+    );
+  }, [filters]);
+
+  return {
+    filters,
+    updateFilter,
+    resetFilters,
+    hasActiveFilters,
+  };
+};
+```
+
+### 2. File Upload Hook
+```typescript
+// hooks/useSellerFileUpload.ts
+import { useState, useCallback } from 'react';
+import { useGenerateUploadUrlsMutation, useProcessUploadedImagesMutation } from '../api/sellerApi';
+
+export const useSellerFileUpload = () => {
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState<Record<string, number>>({});
+  
+  const [generateUrls] = useGenerateUploadUrlsMutation();
+  const [processImages] = useProcessUploadedImagesMutation();
+
+  const uploadFiles = useCallback(async (files: Record<string, File>) => {
+    setUploading(true);
+    setProgress({});
+
+    try {
+      // Step 1: Generate upload URLs
+      const { data: urlData } = await generateUrls({
+        fileTypes: Object.keys(files) as ('image' | 'banner')[],
+      }).unwrap();
+
+      const uploads: Record<string, any> = {};
+
+      // Step 2: Upload files using presigned URLs
+      for (const [fileType, file] of Object.entries(files)) {
+        const uploadInfo = urlData.uploadUrls[fileType];
+        
+        if (!uploadInfo) continue;
+
+        const xhr = new XMLHttpRequest();
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            setProgress(prev => ({ ...prev, [fileType]: percentComplete }));
+          }
+        });
+
+        // Upload file
+        await new Promise((resolve, reject) => {
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              uploads[fileType] = {
+                tempKey: uploadInfo.key,
+                filename: file.name,
+                originalName: file.name,
+              };
+              resolve(xhr.response);
+            } else {
+              reject(new Error(`Upload failed: ${xhr.statusText}`));
+            }
+          };
+          xhr.onerror = () => reject(new Error('Upload failed'));
+          
+          xhr.open('PUT', uploadInfo.uploadUrl);
+          xhr.setRequestHeader('Content-Type', file.type);
+          xhr.send(file);
+        });
+      }
+
+      // Step 3: Process uploaded images
+      const { data: processedData } = await processImages({ uploads }).unwrap();
+
+      setUploading(false);
+      return processedData.processedImages;
+
+    } catch (error) {
+      setUploading(false);
+      throw error;
+    }
+  }, [generateUrls, processImages]);
+
+  return {
+    uploadFiles,
+    uploading,
+    progress,
+  };
+};
+```
+
+### 3. Bulk Actions Hook
+```typescript
+// hooks/useSellerBulkActions.ts
+import { useState, useCallback } from 'react';
+import { useBulkActionSellersMutation } from '../api/sellerApi';
+import { SellerBulkAction } from '../types/seller.types';
+
+export const useSellerBulkActions = () => {
+  const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
+  const [bulkAction] = useBulkActionSellersMutation();
+
+  const toggleSelection = useCallback((sellerId: string) => {
+    setSelectedSellers(prev => 
+      prev.includes(sellerId)
+        ? prev.filter(id => id !== sellerId)
+        : [...prev, sellerId]
+    );
+  }, []);
+
+  const selectAll = useCallback((sellerIds: string[]) => {
+    setSelectedSellers(sellerIds);
+  }, []);
+
+  const clearSelection = useCallback(() => {
+    setSelectedSellers([]);
+  }, []);
+
+  const executeAction = useCallback(async (action: SellerBulkAction) => {
+    if (selectedSellers.length === 0) {
+      throw new Error('No sellers selected');
+    }
+
+    const result = await bulkAction({
+      sellerIds: selectedSellers,
+      action,
+    }).unwrap();
+
+    // Clear selection after successful action
+    if (result.success) {
+      setSelectedSellers([]);
+    }
+
+    return result;
+  }, [selectedSellers, bulkAction]);
+
+  return {
+    selectedSellers,
+    toggleSelection,
+    selectAll,
+    clearSelection,
+    executeAction,
+    hasSelection: selectedSellers.length > 0,
+    selectionCount: selectedSellers.length,
+  };
+};
+```
+
+---
+
+## React Component Examples
+
+### 1. Seller List Component
+```tsx
+// components/SellerList.tsx
+import React from 'react';
+import { useGetSellersQuery } from '../api/sellerApi';
+import { useSellerFilters } from '../hooks/useSellerFilters';
+import { useSellerBulkActions } from '../hooks/useSellerBulkActions';
+import { ISellerAdminItem, SellerStatus } from '../types/seller.types';
+
+const SellerList: React.FC = () => {
+  const { filters, updateFilter } = useSellerFilters();
+  const { selectedSellers, toggleSelection, executeAction } = useSellerBulkActions();
+  
+  const { data, isLoading, error } = useGetSellersQuery(filters);
+
+  const getStatusBadgeColor = (status: SellerStatus) => {
+    switch (status) {
+      case SellerStatus.ACTIVE: return 'green';
+      case SellerStatus.SUSPENDED: return 'red';
+      case SellerStatus.PENDING: return 'yellow';
+      case SellerStatus.REJECTED: return 'gray';
+      default: return 'blue';
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading sellers</div>;
+
+  return (
+    <div className="seller-list">
+      {/* Filters */}
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Search sellers..."
+          value={filters.search}
+          onChange={(e) => updateFilter('search', e.target.value)}
+        />
+        
+        <select
+          value={filters.status}
+          onChange={(e) => updateFilter('status', e.target.value)}
+        >
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+          <option value="pending">Pending</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      {/* Bulk Actions */}
+      {selectedSellers.length > 0 && (
+        <div className="bulk-actions">
+          <button onClick={() => executeAction('activate')}>
+            Activate Selected
+          </button>
+          <button onClick={() => executeAction('suspend')}>
+            Suspend Selected
+          </button>
+          <button onClick={() => executeAction('verify')}>
+            Verify Selected
+          </button>
+        </div>
+      )}
+
+      {/* Table */}
+      <table className="sellers-table">
+        <thead>
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    // Select all visible sellers
+                  } else {
+                    // Clear selection
+                  }
+                }}
+              />
+            </th>
+            <th>Store</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Verified</th>
+            <th>Sales</th>
+            <th>Rating</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.data.map((seller: ISellerAdminItem) => (
+            <tr key={seller._id}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedSellers.includes(seller._id)}
+                  onChange={() => toggleSelection(seller._id)}
+                />
+              </td>
+              <td>
+                <div className="seller-info">
+                  {seller.image && (
+                    <img src={seller.image.url} alt={seller.image.alt} width="32" height="32" />
+                  )}
+                  <span>{seller.storeName}</span>
+                </div>
+              </td>
+              <td>{seller.contactEmail}</td>
+              <td>
+                <span className={`badge badge-${getStatusBadgeColor(seller.status)}`}>
+                  {seller.status}
+                </span>
+              </td>
+              <td>
+                {seller.isVerified ? '✓ Verified' : '✗ Unverified'}
+              </td>
+              <td>${seller.totalSales.toLocaleString()}</td>
+              <td>
+                {seller.averageRating.toFixed(1)} ({seller.totalRatings})
+              </td>
+              <td>
+                <button>Edit</button>
+                <button>View</button>
+                <button>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button
+          disabled={filters.page <= 1}
+          onClick={() => updateFilter('page', filters.page - 1)}
+        >
+          Previous
+        </button>
+        
+        <span>Page {filters.page} of {data?.totalPages}</span>
+        
+        <button
+          disabled={!data?.hasMore}
+          onClick={() => updateFilter('page', filters.page + 1)}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default SellerList;
+```
+
+### 2. Seller Form Component
+```tsx
+// components/SellerForm.tsx
+import React, { useState } from 'react';
+import { useCreateSellerMutation, useUpdateSellerMutation } from '../api/sellerApi';
+import { useSellerFileUpload } from '../hooks/useSellerFileUpload';
+import { ICreateSellerAdminBody, ISellerAdminItem } from '../types/seller.types';
+
+interface SellerFormProps {
+  seller?: ISellerAdminItem;
+  onSuccess?: () => void;
+}
+
+const SellerForm: React.FC<SellerFormProps> = ({ seller, onSuccess }) => {
+  const isEditing = !!seller;
+  const [createSeller] = useCreateSellerMutation();
+  const [updateSeller] = useUpdateSellerMutation();
+  const { uploadFiles, uploading, progress } = useSellerFileUpload();
+
+  const [formData, setFormData] = useState<ICreateSellerAdminBody>({
+    userId: seller?.userId || '',
+    storeName: seller?.storeName || '',
+    storeDescription: seller?.storeDescription || '',
+    contactEmail: seller?.contactEmail || '',
+    phoneNumber: seller?.phoneNumber || '',
+    categories: seller?.categories || [],
+    commissionRate: seller?.commissionRate || 5,
+    isVerified: seller?.isVerified || false,
+    isFeatured: seller?.isFeatured || false,
+    status: seller?.status || 'pending',
+  });
+
+  const [files, setFiles] = useState<Record<string, File>>({});
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      let processedImages = {};
+
+      // Upload files if any
+      if (Object.keys(files).length > 0) {
+        processedImages = await uploadFiles(files);
+      }
+
+      const submitData = {
+        ...formData,
+        ...processedImages,
+      };
+
+      if (isEditing) {
+        await updateSeller({
+          id: seller._id,
+          data: submitData,
+        }).unwrap();
+      } else {
+        await createSeller(submitData).unwrap();
+      }
+
+      onSuccess?.();
+    } catch (error) {
+      console.error('Failed to save seller:', error);
+    }
+  };
+
+  const handleFileChange = (fileType: 'image' | 'banner', file: File | null) => {
+    if (file) {
+      setFiles(prev => ({ ...prev, [fileType]: file }));
+    } else {
+      setFiles(prev => {
+        const newFiles = { ...prev };
+        delete newFiles[fileType];
+        return newFiles;
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="seller-form">
+      <div className="form-group">
+        <label>Store Name *</label>
+        <input
+          type="text"
+          value={formData.storeName}
+          onChange={(e) => setFormData(prev => ({ ...prev, storeName: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Store Description</label>
+        <textarea
+          value={formData.storeDescription || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, storeDescription: e.target.value }))}
+          rows={4}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Contact Email *</label>
+        <input
+          type="email"
+          value={formData.contactEmail}
+          onChange={(e) => setFormData(prev => ({ ...prev, contactEmail: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Phone Number</label>
+        <input
+          type="tel"
+          value={formData.phoneNumber || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Commission Rate (%)</label>
+        <input
+          type="number"
+          min="0"
+          max="100"
+          step="0.1"
+          value={formData.commissionRate}
+          onChange={(e) => setFormData(prev => ({ ...prev, commissionRate: parseFloat(e.target.value) }))}
+        />
+      </div>
+
+      {/* File Uploads */}
+      <div className="form-group">
+        <label>Store Logo</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileChange('image', e.target.files?.[0] || null)}
+        />
+        {uploading && progress.image !== undefined && (
+          <div className="progress-bar">
+            <div style={{ width: `${progress.image}%` }}>
+              {Math.round(progress.image)}%
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label>Store Banner</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileChange('banner', e.target.files?.[0] || null)}
+        />
+        {uploading && progress.banner !== undefined && (
+          <div className="progress-bar">
+            <div style={{ width: `${progress.banner}%` }}>
+              {Math.round(progress.banner)}%
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Status Controls */}
+      <div className="form-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={formData.isVerified}
+            onChange={(e) => setFormData(prev => ({ ...prev, isVerified: e.target.checked }))}
+          />
+          Verified
+        </label>
+      </div>
+
+      <div className="form-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={formData.isFeatured}
+            onChange={(e) => setFormData(prev => ({ ...prev, isFeatured: e.target.checked }))}
+          />
+          Featured
+        </label>
+      </div>
+
+      <div className="form-group">
+        <label>Status</label>
+        <select
+          value={formData.status}
+          onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as any }))}
+        >
+          <option value="pending">Pending</option>
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+          <option value="rejected">Rejected</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div className="form-actions">
+        <button type="submit" disabled={uploading}>
+          {uploading ? 'Uploading...' : isEditing ? 'Update Seller' : 'Create Seller'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default SellerForm;
+```
+
+---
+
+## Error Handling
+
+### Global Error Handler
+```typescript
+// utils/errorHandler.ts
+export interface ApiError {
+  success: boolean;
+  message: string;
+  statusCode: number;
+  errors?: Array<{
+    field?: string;
+    code?: string;
+    value?: any;
+    [key: string]: any;
+  }>;
+}
+
+export const handleApiError = (error: any): string => {
+  if (error.data) {
+    const apiError = error.data as ApiError;
+    
+    // Handle validation errors
+    if (apiError.errors && apiError.errors.length > 0) {
+      return apiError.errors.map(err => 
+        err.field ? `${err.field}: ${apiError.message}` : apiError.message
+      ).join(', ');
+    }
+    
+    return apiError.message || 'An error occurred';
+  }
+  
+  return error.message || 'Network error occurred';
+};
+
+// React hook for error handling
+export const useErrorHandler = () => {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleError = useCallback((err: any) => {
+    const message = handleApiError(err);
+    setError(message);
+    
+    // Auto-clear error after 5 seconds
+    setTimeout(() => setError(null), 5000);
+  }, []);
+
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
+  return { error, handleError, clearError };
+};
+```
+
+### Error Boundary Component
+```tsx
+// components/ErrorBoundary.tsx
+import React, { Component, ReactNode } from 'react';
+
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="error-boundary">
+          <h2>Something went wrong</h2>
+          <details>
+            {this.state.error?.message}
+          </details>
+          <button onClick={() => this.setState({ hasError: false })}>
+            Try again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+
+---
+
+## File Upload Implementation
+
+### Advanced File Upload Component
+```tsx
+// components/FileUpload.tsx
+import React, { useState, useRef, useCallback } from 'react';
+import { useSellerFileUpload } from '../hooks/useSellerFileUpload';
+
+interface FileUploadProps {
+  fileType: 'image' | 'banner';
+  currentFile?: { url: string; alt: string };
+  onUploadComplete: (processedFile: any) => void;
+  onDelete?: () => void;
+  maxSize?: number; // in bytes
+  acceptedTypes?: string[];
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({
+  fileType,
+  currentFile,
+  onUploadComplete,
+  onDelete,
+  maxSize = 5 * 1024 * 1024, // 5MB default
+  acceptedTypes = ['image/jpeg', 'image/png', 'image/webp'],
+}) => {
+  const [dragActive, setDragActive] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const { uploadFiles, uploading, progress } = useSellerFileUpload();
+
+  const validateFile = useCallback((file: File): string | null => {
+    if (!acceptedTypes.includes(file.type)) {
+      return `Please select a valid image file (${acceptedTypes.join(', ')})`;
+    }
+    
+    if (file.size > maxSize) {
+      return `File size must be less than ${(maxSize / 1024 / 1024).toFixed(1)}MB`;
+    }
+    
+    return null;
+  }, [acceptedTypes, maxSize]);
+
+  const handleFile = useCallback(async (file: File) => {
+    const error = validateFile(file);
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      const result = await uploadFiles({ [fileType]: file });
+      const processedFile = result[fileType];
+      
+      if (processedFile) {
+        onUploadComplete(processedFile);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Upload failed. Please try again.');
+      setPreview(null);
+    }
+  }, [fileType, uploadFiles, onUploadComplete, validateFile]);
+
+  const handleDrag = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) {
+      handleFile(files[0]);
+    }
+  }, [handleFile]);
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      handleFile(files[0]);
+    }
+  }, [handleFile]);
+
+  const currentProgress = progress[fileType] || 0;
+  const isUploading = uploading && currentProgress < 100;
+
+  return (
+    <div className="file-upload">
+      {/* Current File Display */}
+      {(currentFile || preview) && !isUploading && (
+        <div className="current-file">
+          <img
+            src={preview || currentFile?.url}
+            alt={currentFile?.alt || `${fileType} preview`}
+            className="file-preview"
+          />
+          {onDelete && (
+            <button
+              type="button"
+              onClick={onDelete}
+              className="delete-button"
+            >
+              ✕ Remove
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Upload Area */}
+      {!currentFile && !preview && (
+        <div
+          className={`upload-area ${dragActive ? 'drag-active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <div className="upload-content">
+            <div className="upload-icon">📁</div>
+            <p>Drag and drop your {fileType} here, or click to select</p>
+            <p className="upload-hint">
+              Accepted formats: {acceptedTypes.join(', ')}
+              <br />
+              Max size: {(maxSize / 1024 / 1024).toFixed(1)}MB
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Progress Bar */}
+      {isUploading && (
+        <div className="upload-progress">
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${currentProgress}%` }}
+            />
+          </div>
+          <span className="progress-text">{Math.round(currentProgress)}%</span>
+        </div>
+      )}
+
+      {/* Hidden File Input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept={acceptedTypes.join(',')}
+        onChange={handleInputChange}
+        style={{ display: 'none' }}
+      />
+    </div>
+  );
+};
+
+export default FileUpload;
+```
+
+---
+
+## Best Practices
+
+### 1. State Management
+- Use RTK Query for server state
+- Keep local UI state minimal
+- Implement optimistic updates where appropriate
+- Cache invalidation strategy
+
+### 2. Performance Optimization
+```typescript
+// Memoize expensive operations
+const expensiveCalculation = useMemo(() => {
+  return sellers.reduce((sum, seller) => sum + seller.totalSales, 0);
+}, [sellers]);
+
+// Debounce search inputs
+const [searchTerm, setSearchTerm] = useState('');
+const debouncedSearch = useDebounce(searchTerm, 300);
+
+useEffect(() => {
+  updateFilter('search', debouncedSearch);
+}, [debouncedSearch, updateFilter]);
+```
+
+### 3. Accessibility
+- Use semantic HTML elements
+- Implement proper ARIA labels
+- Keyboard navigation support
+- Screen reader compatibility
+
+### 4. Error Boundaries
+- Wrap components in error boundaries
+- Graceful error handling
+- User-friendly error messages
+- Error reporting/logging
+
+### 5. Testing
+```typescript
+// Example test for seller list
+import { render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { store } from '../store';
+import SellerList from '../components/SellerList';
+
+test('renders seller list with data', async () => {
+  render(
+    <Provider store={store}>
+      <SellerList />
+    </Provider>
+  );
+
+  await waitFor(() => {
+    expect(screen.getByText('Store Name')).toBeInTheDocument();
+  });
+});
+```
+
+### 6. Environment Configuration
+```typescript
+// config/api.ts
+export const API_CONFIG = {
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1',
+  timeout: 30000,
+  retries: 3,
+};
+
+// Feature flags
+export const FEATURES = {
+  bulkActions: process.env.REACT_APP_ENABLE_BULK_ACTIONS === 'true',
+  fileUpload: process.env.REACT_APP_ENABLE_FILE_UPLOAD === 'true',
+};
+```
+
+---
+
+This comprehensive guide provides everything needed to implement the seller management system on the frontend. The implementation follows React best practices, includes proper TypeScript typing, and provides reusable hooks and components for efficient development.

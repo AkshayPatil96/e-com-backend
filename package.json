@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "start-local": "npx tsc && env-cmd -f .env.local node dist/server.js",
-    "start-dev": "npx tsc && env-cmd -f .env.dev node dist/server.js",
+    "start:local": "npx tsc && env-cmd -f .env.local node dist/server.js",
+    "start:dev": "npx tsc && env-cmd -f .env.dev node dist/server.js",
     "start": "npx tsc && env-cmd -f .env node dist/server.js",
-    "dev-local": "env-cmd -f .env.local nodemon --exec ts-node --files src/server.ts",
-    "dev-dev": "nodemon --exec npm run start-dev",
+    "dev:local": "env-cmd -f .env.local nodemon --exec ts-node --files src/server.ts",
+    "dev:dev": "nodemon --exec npm run start:dev",
     "dev": "nodemon --exec npm run start",
     "ts-node": "ts-node --transpile-only --pretty src/server.ts",
     "build": "prettier --write \"**/*.ts\" && tsc",
@@ -15,7 +15,11 @@
     "prettier": "prettier --check \"**/*.ts\"",
     "prettier-fix": "prettier --write \"**/*.ts\"",
     "eslint": "eslint \"**/*.ts\"",
-    "eslint-fix": "eslint \"**/*.ts\" --fix"
+    "eslint-fix": "eslint \"**/*.ts\" --fix",
+    "logs:report": "node scripts/logManager.js report",
+    "logs:cleanup": "node scripts/logManager.js cleanup",
+    "logs:stats": "node scripts/logManager.js stats",
+    "logs:manage": "node scripts/logManager.js"
   },
   "keywords": [],
   "author": "",
@@ -52,12 +56,14 @@
     "multer-s3": "^3.0.1",
     "multer-sharp-s3": "^0.2.5",
     "nodemailer": "^6.9.15",
+    "redis": "^5.8.2",
     "sharp": "^0.33.4",
     "slugify": "^1.6.6",
     "swagger-jsdoc": "6.2.8",
     "uuid": "^10.0.0",
     "validator": "^13.12.0",
     "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {

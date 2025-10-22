@@ -1,5 +1,7 @@
 // src/controllers/sellerController.ts
 import { NextFunction, Request, Response } from "express";
+import { CatchAsyncErrors } from "../../middleware/catchAsyncErrors";
+import ErrorHandler from "../../utils/ErrorHandler";
 import {
   createSellerService,
   deleteSellerService,
@@ -8,9 +10,7 @@ import {
   restoreSellerService,
   softDeleteSellerService,
   updateSellerService,
-} from "../services/seller.service";
-import { CatchAsyncErrors } from "../../middleware/catchAsyncErrors";
-import ErrorHandler from "../../utils/ErrorHandler";
+} from "../services/seller.service.ts.bk";
 
 const sellerController = {
   createSeller: CatchAsyncErrors(
