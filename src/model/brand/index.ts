@@ -48,6 +48,16 @@ const brandSchema = new Schema<IBrand>(
       minlength: [2, "Brand name must be at least 2 characters"],
       maxlength: [100, "Brand name cannot exceed 100 characters"],
     },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      uppercase: true,
+      minlength: [2, "Brand code must be at least 2 characters"],
+      maxlength: [10, "Brand code cannot exceed 10 characters"],
+      match: [/^[A-Z0-9]+$/, "Brand code can only contain uppercase letters and numbers"],
+    },
     slug: {
       type: String,
       required: true,
@@ -161,6 +171,7 @@ const brandSchema = new Schema<IBrand>(
 
 // Comprehensive indexing for improved query performance
 brandSchema.index({ name: 1 });
+brandSchema.index({ code: 1 }, { unique: true });
 brandSchema.index({ slug: 1 }, { unique: true });
 brandSchema.index({ isDeleted: 1, isActive: 1 });
 brandSchema.index({ categories: 1 });

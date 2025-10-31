@@ -33,6 +33,16 @@ const CategorySchema = new Schema<ICategory>(
   {
     order: { type: Number, default: 0 },
     name: { type: String, required: true, trim: true, maxlength: 100 },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      uppercase: true,
+      minlength: [2, "Category code must be at least 2 characters"],
+      maxlength: [6, "Category code cannot exceed 6 characters"],
+      match: [/^[A-Z0-9]+$/, "Category code can only contain uppercase letters and numbers"],
+    },
     slug: { type: String, required: true, unique: true, trim: true },
     parent: { type: Schema.Types.ObjectId, ref: "Category", default: null },
     ancestors: [{ type: Schema.Types.ObjectId, ref: "Category" }],
@@ -110,6 +120,7 @@ staticMethods(CategorySchema);
 
 // Indexes for performance
 CategorySchema.index({ slug: 1 }, { unique: true });
+CategorySchema.index({ code: 1 }, { unique: true });
 CategorySchema.index({ parent: 1, order: 1 });
 CategorySchema.index({ ancestors: 1 });
 CategorySchema.index({ level: 1 });

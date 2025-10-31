@@ -38,6 +38,7 @@ export interface ICategory extends Document {
   _id: Types.ObjectId;
   order?: number; // Category display order within same level
   name: string; // Category name
+  code: string; // Category code for SKU generation (e.g., "SHO", "CLO", "ACC")
   slug: string; // URL-friendly identifier
   parent?: Types.ObjectId | ICategory; // Reference to Parent Category
   ancestors: Types.ObjectId[]; // Array to store all ancestors up to the top-level category
@@ -96,6 +97,7 @@ export interface ICategory extends Document {
 // Additional interfaces for API requests
 export interface ICreateCategoryBody {
   name: string;
+  code: string;
   description?: string;
   shortDescription?: string;
   parent?: string; // Parent category ID
@@ -110,6 +112,7 @@ export interface ICreateCategoryBody {
 
 export interface IUpdateCategoryBody {
   name?: string;
+  code?: string;
   description?: string;
   shortDescription?: string;
   parent?: string;
@@ -127,6 +130,7 @@ export interface IUpdateCategoryBody {
 export interface ICategoryHierarchyResponse {
   _id: string;
   name: string;
+  code: string;
   slug: string;
   level: number;
   productCount: number;

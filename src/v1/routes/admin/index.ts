@@ -6,6 +6,7 @@ import brandRoutes from "./brand.routes";
 import categoryRoutes from "./category.routes";
 import productRoutes from "./product.routes";
 import sellerRoutes from "./seller.routes";
+import skuRoutes from "./sku.routes";
 import userRoutes from "./user.routes";
 
 const router = express.Router();
@@ -37,6 +38,10 @@ router.use("/products", productRoutes);
 // Mount seller management routes
 // Routes: /api/v1/admin/sellers/*
 router.use("/sellers", sellerRoutes);
+
+// Mount SKU management routes
+// Routes: /api/v1/admin/sku/*
+router.use("/sku", skuRoutes);
 
 // Mount general user management routes
 // Routes: /api/v1/admin/users/*

@@ -48,6 +48,7 @@ export interface IBrandBusinessInfo {
 export interface IBrand extends Document {
   _id: Types.ObjectId;
   name: string; // Brand name
+  code: string; // Brand code for SKU generation (e.g., "NIKE", "ADIDAS")
   slug: string; // URL-friendly identifier
   description?: string; // Brand description
   shortDescription?: string; // Brief description for cards/listings
@@ -101,6 +102,7 @@ export interface IBrand extends Document {
 // Additional interfaces for API requests
 export interface ICreateBrandBody {
   name: string;
+  code: string;
   description?: string;
   shortDescription?: string;
   categories: string[];
@@ -116,6 +118,7 @@ export interface ICreateBrandBody {
 
 export interface IUpdateBrandBody {
   name?: string;
+  code?: string;
   description?: string;
   shortDescription?: string;
   categories?: string[];
@@ -147,6 +150,7 @@ export interface IBrandFilter {
 export interface IBrandResponse {
   _id: string;
   name: string;
+  code: string;
   slug: string;
   description?: string;
   logo?: IImage;
